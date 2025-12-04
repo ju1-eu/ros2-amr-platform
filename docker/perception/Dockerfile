@@ -22,8 +22,10 @@ RUN apt-get update && apt-get install -y \
 # 2. HailoRT (Runtime) aus Quellcode bauen
 # Wir bauen die Software direkt im Container, um Versionskonflikte zu vermeiden.
 WORKDIR /tmp
+# WICHTIG: Wir wechseln auf Tag v4.23.0 passend zum Host-Treiber!
 RUN git clone https://github.com/hailo-ai/hailort.git && \
     cd hailort && \
+    git checkout v4.23.0 && \
     cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && \
     cmake --build build --config Release && \
     cmake --install build/ && \

@@ -36,6 +36,7 @@ RUN git clone https://github.com/hailo-ai/hailort.git && \
 # 3. NEU: Offizieller Raspberry Pi Kamera-Treiber (ros2_camera)
 RUN apt-get update && apt-get install -y \
     libcamera-dev \
+    libcamera-ipa \
     python3-jinja2 \
     ros-jazzy-camera-info-manager \
     ros-jazzy-image-transport \

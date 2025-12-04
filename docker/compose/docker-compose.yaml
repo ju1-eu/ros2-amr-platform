@@ -23,13 +23,14 @@ services:
       - /dev:/dev
       # WICHTIG für libcamera (Hardware-Erkennung):
       - /run/udev:/run/udev:ro
+      # NEU: libcamera IPA-Module vom Host (löst "No IPA found")
+      - /usr/lib/aarch64-linux-gnu/libcamera:/usr/lib/aarch64-linux-gnu/libcamera:ro
+      - /usr/share/libcamera:/usr/share/libcamera:ro
 
     environment:
       - ROS_DOMAIN_ID=0
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 
-    # Wir laden ROS und den lokalen Workspace (für den Kamera-Node)
-    #command: bash -c "source /opt/ros/jazzy/setup.bash && source /ros2_ws/install/setup.bash && tail -f /dev/null"
     command: bash -c "source /opt/ros/jazzy/setup.bash && tail -f /dev/null"
 
   # --- Layer 1: Hardware Bridge (Micro-ROS Agent) ---
@@ -39,8 +40,6 @@ services:
     privileged: true
     network_mode: host
     devices:
-      # Der Agent braucht nur den ESP32
       - /dev/ttyACM0:/dev/ttyACM0
-    # Baudrate 115200 passend zur Firmware
     command: serial --dev /dev/ttyACM0 -b 115200
     restart: always

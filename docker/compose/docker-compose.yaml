@@ -1,5 +1,5 @@
 services:
-  # --- Layer 2: Perception (Lidar, Kamera) ---
+  # --- Layer 2: Perception (Lidar, Kamera, AI) ---
   perception:
     build:
       context: ../perception
@@ -8,13 +8,28 @@ services:
     image: amr_perception:latest
     privileged: true
     network_mode: host
+
+    # Hardware-Zugriff für Kamera & AI
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0 # Lidar
+      - /dev/ttyACM0:/dev/ttyACM0 # ESP32 (für Diagnose)
+      - /dev/hailo0:/dev/hailo0 # AI Chip
+      - /dev/video0:/dev/video0 # Kamera Stream
+      # WICHTIG für Pi 5 Kamera (Speicherzugriff):
+      - /dev/dma_heap:/dev/dma_heap
+
     volumes:
       - ../../ros2_ws:/ros2_ws
       - /dev:/dev
+      # WICHTIG für libcamera (Hardware-Erkennung):
+      - /run/udev:/run/udev:ro
+
     environment:
       - ROS_DOMAIN_ID=0
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-    command: bash -c "source /opt/ros/jazzy/setup.bash && tail -f /dev/null"
+
+    # Wir laden ROS und den lokalen Workspace (für den Kamera-Node)
+    command: bash -c "source /opt/ros/jazzy/setup.bash && source /ros2_ws/install/setup.bash && tail -f /dev/null"
 
   # --- Layer 1: Hardware Bridge (Micro-ROS Agent) ---
   micro_ros:
@@ -23,14 +38,8 @@ services:
     privileged: true
     network_mode: host
     devices:
-      # Lidar
-      - /dev/ttyUSB0:/dev/ttyUSB0
-      # Micro-ROS ESP32
+      # Der Agent braucht nur den ESP32
       - /dev/ttyACM0:/dev/ttyACM0
-      # Hailo AI Chip
-      - /dev/hailo0:/dev/hailo0
-      # Kamera Stream
-      - /dev/video0:/dev/video0
-    # WICHTIG: Baudrate 115200 muss zur platformio.ini passen!
+    # Baudrate 115200 passend zur Firmware
     command: serial --dev /dev/ttyACM0 -b 115200
     restart: always

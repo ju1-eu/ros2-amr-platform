@@ -8,10 +8,12 @@ RUN apt-get update && apt-get install -y \
     iputils-ping \
     python3-pip \
     v4l-utils \
-    # Kamera-Treiber (Backup) & Lidar
     ros-jazzy-v4l2-camera \
     ros-jazzy-rplidar-ros \
     ros-jazzy-rmw-cyclonedds-cpp \
+    # --- NEU HINZUGEFÜGT ---
+    ros-jazzy-ament-cmake \
+    # --------------------------
     # Build-Tools
     cmake \
     git \

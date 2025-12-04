@@ -6,6 +6,7 @@ FROM ros:jazzy-ros-base
 # ros-jazzy-rmw-cyclonedds-cpp = Kommunikationstreiber
 RUN apt-get update && apt-get install -y \
     usbutils \
+    udev \
     iputils-ping \
     python3-pip \
     v4l-utils \

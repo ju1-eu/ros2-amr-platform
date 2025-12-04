@@ -1,30 +1,16 @@
 services:
-  # --- Layer 2: Perception (Augen & Ohren) ---
   perception:
     build:
-      context: ../perception  # Wo liegt das Dockerfile?
+      context: ../perception
       dockerfile: Dockerfile
     container_name: amr_perception
     image: amr_perception:latest
-
-    # KRITISCH: Privileged Mode für Hardware-Zugriff
-    # Ohne das darf der Container nicht auf /dev/ttyUSB0 zugreifen
     privileged: true
-
-    # Wir nutzen das Netzwerk des Hosts (wichtig für ROS 2 Discovery)
     network_mode: host
-
     volumes:
-      # 1. Code-Sync: Wir spiegeln unseren Git-Ordner in den Container
-      # Änderungen am Code sind sofort sichtbar!
       - ../../ros2_ws:/ros2_ws
-
-      # 2. Hardware-Pass: Wir reichen alle Geräte durch
       - /dev:/dev
-
     environment:
-      - ROS_DOMAIN_ID=0       # Muss bei allen Robotern im Netz gleich sein
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp # Empfohlen für WiFi
-
-    # Startbefehl: ROS laden und Container am Leben halten
+      - ROS_DOMAIN_ID=0
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
     command: bash -c "source /opt/ros/jazzy/setup.bash && tail -f /dev/null"

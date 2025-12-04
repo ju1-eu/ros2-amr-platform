@@ -32,10 +32,8 @@ RUN git clone https://github.com/hailo-ai/hailort.git && \
     rm -rf /tmp/hailort
 
 # 3. NEU: Offizieller Raspberry Pi Kamera-Treiber (ros2_camera)
-# Wir installieren libcamera und bauen den Node, der das RAW-Format versteht.
 RUN apt-get update && apt-get install -y \
     libcamera-dev \
-    libcamera-apps \
     python3-jinja2 \
     ros-jazzy-camera-info-manager \
     ros-jazzy-image-transport \

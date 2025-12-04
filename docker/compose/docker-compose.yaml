@@ -29,7 +29,8 @@ services:
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 
     # Wir laden ROS und den lokalen Workspace (für den Kamera-Node)
-    command: bash -c "source /opt/ros/jazzy/setup.bash && source /ros2_ws/install/setup.bash && tail -f /dev/null"
+    #command: bash -c "source /opt/ros/jazzy/setup.bash && source /ros2_ws/install/setup.bash && tail -f /dev/null"
+    command: bash -c "source /opt/ros/jazzy/setup.bash && tail -f /dev/null"
 
   # --- Layer 1: Hardware Bridge (Micro-ROS Agent) ---
   micro_ros:

@@ -39,11 +39,11 @@ RUN apt-get update && apt-get install -y \
     ros-jazzy-image-transport \
     && rm -rf /var/lib/apt/lists/*
 
-# Node klonen
+# Node klonen (Korrekte URL für Libcamera Node)
 WORKDIR /ros2_ws/src
-RUN git clone https://github.com/raspberrypi/ros2_camera.git
+RUN git clone https://github.com/christianrauch/camera_ros.git
 
-# Workspace bauen (Compiling the Camera Node)
+# Workspace bauen
 WORKDIR /ros2_ws
 RUN . /opt/ros/jazzy/setup.sh && colcon build
 

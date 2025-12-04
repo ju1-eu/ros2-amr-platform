@@ -1,4 +1,5 @@
 services:
+  # --- Layer 2: Perception (Lidar, Kamera) ---
   perception:
     build:
       context: ../perception
@@ -14,3 +15,15 @@ services:
       - ROS_DOMAIN_ID=0
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
     command: bash -c "source /opt/ros/jazzy/setup.bash && tail -f /dev/null"
+
+  # --- Layer 1: Hardware Bridge (Micro-ROS Agent) ---
+  micro_ros:
+    image: microros/micro-ros-agent:jazzy
+    container_name: amr_micro_ros
+    privileged: true
+    network_mode: host
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+    # WICHTIG: Baudrate 115200 muss zur platformio.ini passen!
+    command: serial --dev /dev/ttyACM0 -b 115200
+    restart: always

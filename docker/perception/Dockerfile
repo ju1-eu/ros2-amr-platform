@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     v4l-utils \
     ros-jazzy-v4l2-camera \
     ros-jazzy-rplidar-ros \
+    ros-jazzy-rmw-cyclonedds-cpp \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /ros2_ws
